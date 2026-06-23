@@ -1,0 +1,41 @@
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.paginationList {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 8px;
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 6px;
+  border: 1px solid;
+  border-radius: 6px;
+  background-color: #FFFCF9;
+  color: #26547C;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+.disabled {
+  color: #a0aec0;
+  background-color: #edf2f7;
+  border-color: #edf2f7;
+  cursor: not-allowed;
+}
