@@ -5,7 +5,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 const QuantityBox = ({ quantity, onIncrease, onDecrease }) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 2, width: "100%", justifyContent: 'center' }}>
       <IconButton size="small" onClick={onDecrease} disabled={quantity <= 1}>
         <RemoveIcon fontSize="small" />
       </IconButton>

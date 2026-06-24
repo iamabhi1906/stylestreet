@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import { fetchProduct } from "./fetch-product";
 import ProductPagination from "./components/product-pagination";
 import ProductCard from "./components/product-card";
+import ProductFilter from "./components/product-filter";
 
 export default async function ProductsPage({ searchParams }) {
   const option = await searchParams;
@@ -10,10 +11,12 @@ export default async function ProductsPage({ searchParams }) {
     skip: option.skip,
     select: option.select,
     q: option.q,
+    category: option.category
   });
 
   return (
     <Box sx={{ px: 3, py: 4 }}>
+      <ProductFilter />
       <Grid container spacing={2}>
         {data.products.map((p) => (
           <Grid key={p.id} size={4}>

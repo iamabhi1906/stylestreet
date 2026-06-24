@@ -1,112 +1,98 @@
-"use client";
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
+  Chip,
   Typography,
+  Rating,
+  Stack,
 } from "@mui/material";
-import {
-  addToCart,
-  decreaseQuantity,
-  findProductInCart,
-  increaseQuantity,
-} from "../cart-functions";
-import QuantityBox from "./quantity-box";
+import ActionButton from "./action-button";
+
 const ProductCard = ({ product }) => {
-  const [cartProduct, setCartProduct] = useState(() => {
-    return findProductInCart(product) || null;
-  });
-  const onAddToCart = () => {
-    const addedProduct = addToCart(product);
-    setCartProduct(addedProduct);
-  };
-  const iquantity = () => {
-    const updatedProduct = increaseQuantity(cartProduct);
-    setCartProduct(updatedProduct);
-  };
-  const dquantity = () => {
-    const updatedProduct = decreaseQuantity(cartProduct);
-    setCartProduct(updatedProduct);
-  };
+  const originalPrice = (
+    product.price /
+    (1 - product.discountPercentage / 100)
+  ).toFixed(2);
+
   return (
     <Card
       sx={{
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRadius: 2,
-        overflow: "hidden",
+        borderRadius: 3,
       }}
     >
-      <Link
-        href={`/products/${product.id}`}
-        style={{ textDecoration: "none", display: "block" }}
-      >
+      <Link href={`/products/${product.id}`} style={{ textDecoration: "none" }}>
         <CardMedia
           component="div"
           sx={{
             position: "relative",
-            width: "100%",
-            height: 200,
+            height: 240,
+            bgcolor: "#f8f8f8",
           }}
         >
           <Image
             src={product.thumbnail}
             alt={product.title}
             fill
-            sizes="(max-width: 600px) 100vw, 250px"
-            style={{ objectFit: "cover" }}
+            sizes="100"
+            loading="eager"
+            style={{ objectFit: "contain" }}
           />
         </CardMedia>
       </Link>
 
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="subtitle1" fontWeight={600} gutterBottom noWrap>
+        <Chip label={product.category} variant="outlined" />
+
+        <Typography variant="h5" fontWeight={700} gutterBottom>
           {product.title}
         </Typography>
 
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >
+        <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <Rating
+            value={product.rating}
+            precision={0.1}
+            readOnly
+            size="small"
+          />
+          <Typography variant="body2">({product.rating})</Typography>
+        </Stack>
+
+        <Typography variant="body2" color="text.secondary">
           {product.description}
         </Typography>
       </CardContent>
 
-      <CardActions sx={{ px: 2, pb: 2, justifyContent: "space-between" }}>
-        <Box>
-          <Typography variant="caption" color="text.secondary">
-            Price
-          </Typography>
-
-          <Typography variant="h6" fontWeight={700}>
+      <CardActions
+        sx={{
+          px: 4,
+          pb: 2,
+          flexDirection: "column",
+          gap: 2,
+          width: '100%'
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center" , justifyContent: 'start'}}>
+          <Typography variant="h5" color="primary" fontWeight={700}>
             ${product.price}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textDecoration: "line-through" }}
+          >
+            ${originalPrice}
           </Typography>
         </Box>
 
-        {cartProduct ? (
-          <QuantityBox
-            quantity={cartProduct.quantity}
-            onIncrease={iquantity}
-            onDecrease={dquantity}
-          />
-        ) : (
-          <Button variant="contained" size="small" onClick={onAddToCart}>
-            Add to Cart
-          </Button>
-        )}
+        <ActionButton product={product} />
       </CardActions>
     </Card>
   );

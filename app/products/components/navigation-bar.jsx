@@ -25,7 +25,7 @@ const NavigationBar = () => {
       </Box>
 
       <IconButton aria-label="View Cart" href="/cart">
-        <Badge badgeContent={3} color="primary" max={10}>
+        <Badge variant="dot" color="primary">
           <ShoppingCartIcon />
         </Badge>
       </IconButton>
