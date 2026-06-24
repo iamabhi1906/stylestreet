@@ -39,19 +39,28 @@ const increaseQuantity = (product) => {
 
 const decreaseQuantity = (product) => {
   const cart = loadCart();
-  const updatedCart = cart.map((item) => {
-    if (item.id === product.id) {
-      return { ...item, quantity: Math.max(1, item.quantity - 1) };
-    }
-    return item;
-  });
+
+  const updatedCart = cart
+    .map((item) => {
+      if (item.id === product.id) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    })
+    .filter((item) => item.quantity > 0);
+
   localStorage.setItem("carts", JSON.stringify(updatedCart));
-  return updatedCart.find((item) => item.id === product.id);
+
+  return updatedCart.find((item) => item.id === product.id) || null;
 };
 
 const findProductInCart = (product) => {
   const cart = loadCart();
   return cart.find((item) => item.id === product.id);
+};
+
+const clearCart = () => {
+  localStorage.removeItem("carts");
 };
 
 export {
@@ -60,4 +69,5 @@ export {
   findProductInCart,
   increaseQuantity,
   decreaseQuantity,
+  clearCart
 };
