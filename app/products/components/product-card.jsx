@@ -1,5 +1,5 @@
 "use client";
-
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -11,10 +11,28 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-
+import {
+  addToCart,
+  decreaseQuantity,
+  findProductInCart,
+  increaseQuantity,
+} from "../cart-functions";
+import QuantityBox from "./quantity-box";
 const ProductCard = ({ product }) => {
-  const addToCart = (p) => {
-    console.log(p);
+  const [cartProduct, setCartProduct] = useState(() => {
+    return findProductInCart(product) || null;
+  });
+  const onAddToCart = () => {
+    const addedProduct = addToCart(product);
+    setCartProduct(addedProduct);
+  };
+  const iquantity = () => {
+    const updatedProduct = increaseQuantity(cartProduct);
+    setCartProduct(updatedProduct);
+  };
+  const dquantity = () => {
+    const updatedProduct = decreaseQuantity(cartProduct);
+    setCartProduct(updatedProduct);
   };
   return (
     <Card
@@ -49,13 +67,7 @@ const ProductCard = ({ product }) => {
       </Link>
 
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography
-          variant="subtitle1"
-          fontWeight={600}
-          gutterBottom
-          noWrap
-          title={product.title}
-        >
+        <Typography variant="subtitle1" fontWeight={600} gutterBottom noWrap>
           {product.title}
         </Typography>
 
@@ -75,11 +87,7 @@ const ProductCard = ({ product }) => {
 
       <CardActions sx={{ px: 2, pb: 2, justifyContent: "space-between" }}>
         <Box>
-          <Typography
-            variant="caption"
-            sx={{ textTransform: "uppercase", fontSize: "0.7rem" }}
-            color="text.secondary"
-          >
+          <Typography variant="caption" color="text.secondary">
             Price
           </Typography>
 
@@ -88,13 +96,17 @@ const ProductCard = ({ product }) => {
           </Typography>
         </Box>
 
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => addToCart(product)}
-        >
-          Add to Cart
-        </Button>
+        {cartProduct ? (
+          <QuantityBox
+            quantity={cartProduct.quantity}
+            onIncrease={iquantity}
+            onDecrease={dquantity}
+          />
+        ) : (
+          <Button variant="contained" size="small" onClick={onAddToCart}>
+            Add to Cart
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
