@@ -45,7 +45,7 @@ const ProductCard = ({ product }) => {
       }}
     >
       <Link
-        href={`/${product.id}`}
+        href={`/products/${product.id}`}
         style={{ textDecoration: "none", display: "block" }}
       >
         <CardMedia

@@ -5,7 +5,6 @@ import ProductCard from "./components/product-card";
 
 export default async function ProductsPage({ searchParams }) {
   const option = await searchParams;
-
   const data = await fetchProduct({
     limit: option.limit || 10,
     skip: option.skip,

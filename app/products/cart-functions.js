@@ -1,4 +1,5 @@
 const loadCart = () => {
+  if (typeof localStorage === "undefined") return [];
   const savedCarts = localStorage.getItem("carts");
   if (savedCarts) {
     return JSON.parse(savedCarts);
