@@ -8,11 +8,12 @@ import {
   Popover,
   Typography,
   CircularProgress,
+  Badge,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Clear } from "@mui/icons-material";
+import { Category, Clear } from "@mui/icons-material";
 
 export default function ProductCategories() {
   const [categories, setCategories] = useState([]);
@@ -67,14 +68,17 @@ export default function ProductCategories() {
 
   return (
     <Box>
-      <Button variant="contained" disabled={loading} onClick={handleClick}>
-        {loading ? (
+      <Button disabled={loading} onClick={handleClick}>
+        <Badge variant={selectedC && "dot"}>
+          <Category />
+        </Badge>
+        {/* {loading ? (
           <CircularProgress size={20} color="inherit" />
         ) : (
           <Typography sx={{ textTransform: "capitalize" }}>
             {selectedC ? selectedC : "Product Categories"}
           </Typography>
-        )}
+        )} */}
       </Button>
 
       <Popover
@@ -85,6 +89,7 @@ export default function ProductCategories() {
           vertical: "bottom",
           horizontal: "left",
         }}
+        sx={{ maxHeight: "500px" }}
       >
         {categories.length > 0 && (
           <List sx={{ minWidth: 250 }}>

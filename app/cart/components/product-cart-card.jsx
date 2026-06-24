@@ -1,4 +1,4 @@
-import { increaseQuantity } from "@/app/products/cart-functions";
+import { decreaseQuantity, increaseQuantity } from "@/app/products/cart-functions";
 import QuantityBox from "@/app/products/components/quantity-box";
 import { Box, Card, CardMedia, Stack, Typography } from "@mui/material";
 
@@ -41,7 +41,7 @@ export default function ProductCartCard({ product, refresh }) {
             ${calculatedDiscountedPrice(product)}
           </Typography>
           <Typography sx={{ textDecoration: "line-through" }}>
-            ${product.price * product.quantity}
+            ${(product.price * product.quantity).toFixed(2)}
           </Typography>
           <Typography color="success.main" sx={{ display: "flex" }}>
             {product.discountPercentage}% OFF
@@ -56,7 +56,7 @@ export default function ProductCartCard({ product, refresh }) {
           (increaseQuantity(product), refresh());
         }}
         onDecrease={() => {
-          (decreaseQuantity(product), refresh);
+          (decreaseQuantity(product), refresh());
         }}
       />
 

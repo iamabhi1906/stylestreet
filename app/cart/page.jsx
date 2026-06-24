@@ -1,13 +1,17 @@
 "use client";
 import { Box, Typography, Button, Divider, Paper, Stack } from "@mui/material";
 
-import { loadCart } from "../products/cart-functions";
+import { clearCart, loadCart } from "../products/cart-functions";
 import ProductCartCard from "./components/product-cart-card";
 import GoBackButton from "@/components/go-back-button";
 import { useState, useEffect } from "react";
+import OrderSuccessDialog from "./components/order-confirmation";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
   const [cart, setCart] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setCart(loadCart());
@@ -20,12 +24,20 @@ export default function CartPage() {
   if (cart.length === 0) {
     return (
       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight="60vh"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignContent: "center",
+          height: "100%",
+          marginX: "auto",
+          gap: 3,
+        }}
       >
         <Typography variant="h5">No product in the cart</Typography>
+        <Button href="/products" variant="outlined">
+          Add product To Cart..!!
+        </Button>
       </Box>
     );
   }
@@ -43,6 +55,13 @@ export default function CartPage() {
 
   const refresh = () => {
     setCart(loadCart());
+  };
+  const placeOrder = () => {
+    setSuccess(true);
+  };
+  const onSuccessClose = () => {
+    clearCart();
+    router.replace("/products");
   };
 
   return (
@@ -120,24 +139,21 @@ export default function CartPage() {
 
               <Button
                 variant="contained"
-                size="large"
                 fullWidth
-                sx={{
-                  mt: 2,
-                  py: 1.5,
-                  borderRadius: 2,
-                }}
+                onClick={() => placeOrder()}
               >
-                Checkout
-              </Button>
-
-              <Button variant="outlined" fullWidth>
-                Continue Shopping
+                Place your order
               </Button>
             </Stack>
           </Paper>
         </Box>
       </Box>
+      <OrderSuccessDialog
+        open={success}
+        onClose={() => {
+          onSuccessClose();
+        }}
+      />
     </Box>
   );
 }
